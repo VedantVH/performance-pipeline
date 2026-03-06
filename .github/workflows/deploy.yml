@@ -1,0 +1,74 @@
+name: Performance-Gated Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Start local server
+        run: |
+          npx vite preview --port 5000 &
+          sleep 5 # Wait for the server to start
+
+      - name: Run Lighthouse audit
+        run: lighthouse http://localhost:5000 --output html --output json --output-path ./lh-report --chrome-flags="--headless"
+
+      - name: 🚦 Performance Gate Check
+        env:
+          PERF_THRESHOLD: ${{ vars.PERF_THRESHOLD || '0.8' }}
+        run: node check-score.js
+
+      - name: Upload Lighthouse Report Artifact
+        if: always() # Upload report even if the gate fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            lh-report.report.html
+            lh-report.report.json
+
+      - name: Setup Pages
+        # Only setup pages if the above steps (specifically the gate) passed
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
