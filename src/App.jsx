@@ -13,11 +13,6 @@ function App() {
   useEffect(() => {
     const start = Date.now();
     while (Date.now() - start < 1500) {
-      // block the thread for 1.5 seconds
-    }
-  }, []);
-
-  // Fetch and render score history chart
   useEffect(() => {
     fetch('/scores.json')
       .then(res => res.json())
@@ -109,11 +104,6 @@ function App() {
         <img
           src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=3000&auto=format&fit=crop"
           alt="Massive unoptimized bg"
-          style={{ width: '100%', maxWidth: '800px', display: 'block' }}
-        />
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
