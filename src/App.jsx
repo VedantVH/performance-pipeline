@@ -9,10 +9,7 @@ function App() {
   const chartRef = useRef(null)
   const canvasRef = useRef(null)
 
-  // Intentionally block the main thread to ruin Total Blocking Time (TBT)
-  useEffect(() => {
-    const start = Date.now();
-    while (Date.now() - start < 1500) {
+  // Fetch and render score history chart
   useEffect(() => {
     fetch('/scores.json')
       .then(res => res.json())
@@ -100,10 +97,9 @@ function App() {
   return (
     <>
       <div>
-        {/* Massive unoptimized image without width/height to cause layout shifts and bad LCP */}
-        <img
-          src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=3000&auto=format&fit=crop"
-          alt="Massive unoptimized bg"
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
