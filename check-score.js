@@ -13,6 +13,27 @@ try {
     console.log(`Lighthouse Performance Score: ${Math.round(performanceScore * 100)} / 100`);
     console.log(`Threshold: ${Math.round(THRESHOLD * 100)} / 100`);
 
+    // Append to scores.json
+    const scoresFilePath = './public/scores.json';
+    try {
+        let scoresHistory = [];
+        if (fs.existsSync(scoresFilePath)) {
+            const historyData = fs.readFileSync(scoresFilePath, 'utf8');
+            scoresHistory = JSON.parse(historyData);
+        }
+
+        scoresHistory.push({
+            timestamp: new Date().toISOString(),
+            score: Math.round(performanceScore * 100),
+            sha: process.env.GITHUB_SHA || 'local'
+        });
+
+        fs.writeFileSync(scoresFilePath, JSON.stringify(scoresHistory, null, 2));
+        console.log('✅ Appended score to public/scores.json');
+    } catch (err) {
+        console.error('⚠️ Could not append score to history:', err.message);
+    }
+
     if (performanceScore < THRESHOLD) {
         console.error(`🚨 Gate Failed: Performance score is below the threshold!`);
         process.exit(1);
