@@ -14,5 +14,16 @@
     },
     "sha": "c1855588abc7657ce8706f91aed35a27f3d827f4",
     "status": "PASS"
+  },
+  {
+    "timestamp": "2026-03-07T16:42:21.363Z",
+    "score": 83,
+    "metrics": {
+      "lcp": 2193.5158,
+      "tbt": 577,
+      "cls": 0.00011146008163103598
+    },
+    "sha": "f8817769b2e80c8a17e2071d5e91e26f44fdb83f",
+    "status": "PASS"
   }
 ]
