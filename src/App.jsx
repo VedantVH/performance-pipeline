@@ -29,7 +29,7 @@ function App() {
   const [latest, setLatest] = useState(null);
 
   useEffect(() => {
-    fetch('/scores.json')
+    fetch(`${import.meta.env.BASE_URL}scores.json`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -80,7 +80,7 @@ function App() {
     <div className="app-container">
       <header className="dashboard-header">
         <div className="logo-group">
-          <img src={viteLogo} className="mini-logo" alt="Vite" />
+          <img src={`${import.meta.env.BASE_URL}vite.svg`} className="mini-logo" alt="Vite" />
           <img src={reactLogo} className="mini-logo" alt="React" />
           <h1>PerfGate Analytics</h1>
         </div>
