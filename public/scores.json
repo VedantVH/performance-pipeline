@@ -3,5 +3,16 @@
     "timestamp": "2026-03-06T09:29:26.669Z",
     "score": 74,
     "sha": "local"
+  },
+  {
+    "timestamp": "2026-03-07T16:36:46.963Z",
+    "score": 88,
+    "metrics": {
+      "lcp": 2077.9261,
+      "tbt": 422,
+      "cls": 0
+    },
+    "sha": "c1855588abc7657ce8706f91aed35a27f3d827f4",
+    "status": "PASS"
   }
 ]
